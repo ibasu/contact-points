@@ -1,0 +1,68 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.5'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'idea'
+	id 'groovy'
+}
+
+apply plugin: 'jacoco'
+
+group = 'au.com.belong.customermaster.contactpoints'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.flywaydb:flyway-core'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.9'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.3'
+	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+	compile "io.springfox:springfox-swagger2:2.9.2"
+	compile "io.springfox:springfox-swagger-ui:2.9.2"
+
+	implementation 'javax.validation:validation-api:2.0.0.Final'
+	implementation 'org.hibernate:hibernate-validator:6.0.2.Final'
+	implementation 'org.hibernate:hibernate-validator-annotation-processor:6.0.2.Final'
+	implementation 'javax.el:javax.el-api:3.0.0'
+	implementation 'org.glassfish.web:javax.el:2.2.6'
+
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+	testImplementation "org.spockframework:spock-core:${spockVersion}"
+	testImplementation "org.spockframework:spock-spring:${spockVersion}"
+	testImplementation "com.github.tomakehurst:wiremock-standalone:${wireMockVersion}"
+	testCompile "io.rest-assured:rest-assured:${restAssuredVersion}"
+	testCompile "io.rest-assured:json-path:${restAssuredVersion}"
+	testCompile "io.rest-assured:xml-path:${restAssuredVersion}"
+	testRuntime "net.bytebuddy:byte-buddy:1.9.3"          // allows mocking of classes (in addition to interfaces)
+	testRuntime "org.objenesis:objenesis:2.6"
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+springBoot {
+	buildInfo()
+}
+
+test.finalizedBy jacocoTestReport
+defaultTasks = ['clean', 'build']
+
